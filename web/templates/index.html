@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sentiment Predictor</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #eef3f9 0%, #ffffff 100%);
+            min-height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .navbar {
+            background: #ffffff !important;
+            border-bottom: 1px solid #e0e6ed;
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4c4c4c !important;
+        }
+
+        .nav-link {
+            color: #5c6b82 !important;
+            font-size: 16px;
+            font-weight: 500;
+            margin-left: 18px;
+        }
+
+        .nav-link.active {
+            color: #6a5af9 !important;
+            font-weight: 700;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .container-box {
+            background: white;
+            border-radius: 14px;
+            padding: 35px;
+            margin-top: 40px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .predict-btn {
+            background: linear-gradient(135deg, #6a5af9, #8b54ff);
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .predict-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .text-area {
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #d6d6e7;
+        }
+
+        .result-box {
+            font-size: 1.5rem;
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 25px;
+            animation: fadeIn 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .positive {
+            background: #e8ffe9;
+            color: #2b8a3e;
+            border-left: 6px solid #2b8a3e;
+        }
+
+        .negative {
+            background: #ffe8e8;
+            color: #d62828;
+            border-left: 6px solid #d62828;
+        }
+
+        .neutral {
+            background: #fff6e5;
+            color: #b77f2b;
+            border-left: 6px solid #b77f2b;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-emoji-smile"></i> Sentiment NLP
+            </a>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">
+                        <i class="bi bi-chat-square-quote"></i> Predict
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">
+                        <i class="bi bi-info-circle"></i> About
+                    </a>
+                </li>
+
+                <!-- ⭐ TAB MỚI: CHARTS -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/charts">
+                        <i class="bi bi-bar-chart-line"></i> Charts
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <div class="container-box">
+            <h2 class="hero-title">
+                <i class="bi bi-robot"></i> Sentiment Predictor
+            </h2>
+
+            <form method="POST">
+                <textarea name="comment" rows="5" class="form-control text-area"
+                    placeholder="Nhập review của bạn...">{{ text if text else "" }}</textarea>
+
+                <button class="predict-btn mt-3 w-100">
+                    <i class="bi bi-lightning-charge-fill"></i> Predict Now
+                </button>
+            </form>
+
+            {% if prediction %}
+            <div class="result-box
+                        {% if prediction=='Positive' %}positive
+                        {% elif prediction=='Negative' %}negative
+                        {% else %}neutral{% endif %}">
+                
+                {% if prediction == 'Positive' %}
+                    <i class="bi bi-emoji-smile" style="font-size:2rem;"></i>
+                    <b> Positive</b>
+                {% elif prediction == 'Negative' %}
+                    <i class="bi bi-emoji-angry" style="font-size:2rem;"></i>
+                    <b> Negative</b>
+                {% else %}
+                    <i class="bi bi-emoji-neutral" style="font-size:2rem;"></i>
+                    <b> Neutral</b>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</body>
+</html>
