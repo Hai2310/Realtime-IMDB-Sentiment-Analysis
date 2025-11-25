@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics Dashboard</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #f7f9fc;
+            font-family: "Segoe UI";
+        }
+
+        .chart-box {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.10);
+            margin-bottom: 35px;
+            animation: fade 0.5s ease-in-out;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        @keyframes fade {
+            from {opacity: 0; transform: translateY(6px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg shadow-sm" style="background:white;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Sentiment NLP</a>
+
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Predict</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/charts">Charts</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% for title, filename in images %}
+        <div class="chart-box">
+            <div class="chart-title">{{ title }}</div>
+            <img src="/{{ filename }}" alt="{{ title }}">
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

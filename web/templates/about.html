@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About Model</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f7f9fc;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* NAVBAR light mode */
+        .navbar {
+            background: #ffffff !important;
+            border-bottom: 1px solid #e0e6ed;
+            padding: 12px 0;
+        }
+        .navbar-brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4c4c4c !important;
+        }
+        .nav-link {
+            color: #5c6b82 !important;
+            font-size: 16px;
+            margin-left: 18px;
+        }
+        .nav-link.active {
+            color: #6a5af9 !important;
+            font-weight: 700;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+            box-shadow: 0
+        }
+        
+        h3 {
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid">
+            <div class="navbar-brand nav-title">
+                <i class="bi bi-emoji-smile"></i> Sentiment NLP
+            </div>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Predict</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/about">About Model</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="box">
+            <h3><i class="bi bi-info-circle"></i> About This Model</h3>
+
+            <p>Mô hình phân tích cảm xúc được xây dựng bằng <b>Apache Spark ML Pipeline</b>.</p>
+
+            <p>Pipeline gồm:</p>
+
+            <ul>
+                <li>Tokenizer</li>
+                <li>StopWordsRemover</li>
+                <li>CountVectorizer</li>
+                <li>IDF</li>
+                <li>Logistic Regression</li>
+            </ul>
+
+            <p>Model được đóng gói và load lại bằng <code>PipelineModel.load()</code> trong Flask.</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
