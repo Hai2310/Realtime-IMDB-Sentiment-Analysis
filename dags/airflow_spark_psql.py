@@ -22,10 +22,13 @@ with DAG(
     spark_processing = BashOperator(
         task_id = "spark_processing" ,
         bash_command = """spark-submit \
-                            --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1,com.johnsnowlabs.nlp:spark-nlp_2.12:5.4.0 \
+                            --master spark://localhost:7077 \
+                            --conf spark.executorEnv.PYSPARK_PYTHON=/home/enovo/prj/test/test_env/bin/python \
+                            --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=/home/enovo/prj/test/test_env/bin/python \
+                            --conf spark.pyspark.python=/home/enovo/prj/test/test_env/bin/python \
+                            --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1 \
                             --jars /home/enovo/prj/test/postgresql-42.7.3.jar \
-                            --conf "spark.driver.extraJavaOptions=-javaagent:/opt/jmx_prometheus_javaagent-0.20.0.jar=8090:/opt/spark.yml" \
-                            --conf "spark.executor.extraJavaOptions=-javaagent:/opt/jmx_prometheus_javaagent-0.20.0.jar=8091:/opt/spark.yml" \
+                            --conf "spark.sql.sources.useV1SourceList=jdbc" \
                             /home/enovo/prj/test/spark/main.py"""
     )
 
