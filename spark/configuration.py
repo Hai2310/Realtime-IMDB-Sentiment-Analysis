@@ -11,19 +11,21 @@ import traceback
 class SparkConfig :
     def create_sparksession() :
         spark = SparkSession.builder.appName("IMDB movie") \
-                                    .config("spark.driver.memory" , "8g") \
-                                    .config("spark.executor.memory" , "4g") \
+                                    .master("local[1]") \
+                                    .config("spark.driver.memory" , "2g") \
+                                    .config("spark.executor.memory" , "1g") \
                                     .config('spark.streaming.stopGracefullyOnShutdown' , True) \
-                                    .config("spark.sql.shuffle.partitions" , "20") \
+                                    .config("spark.sql.shuffle.partitions", "2") \
+                                    .config("spark.default.parallelism", "1") \
                                     .config("spark.jars.packages" , "org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1," \
                                                                     "com.johnsnowlabs.nlp:spark-nlp_2.12:5.4.0") \
                                     .config("spark.jars" , "/home/enovo/prj/test/postgresql-42.7.3.jar") \
                                     .getOrCreate()
         return spark 
-    
+# .config("maxOffsetsPerTrigger", 200) \
 class IMDB_Schema :
     def movie_schema() :
-        movie_schema = ArrayType(StructType([
+        movie_schema = StructType([
             StructField('movie_id' , StringType() , True) , 
             StructField("title" , StringType() , True) ,
             StructField("rating" , FloatType() , True) , 
@@ -39,21 +41,21 @@ class IMDB_Schema :
             StructField("plot" , StringType() , True) ,
             StructField("poster" , StringType() , True) ,
             StructField("url" , StringType() , True)
-        ]))
+        ])
         return movie_schema
     
     def actor_schema()  :
-        actor_schema = ArrayType(StructType([
+        actor_schema = StructType([
             StructField("actor_id" , StringType() , True) ,
             StructField("director" , StringType() , True) ,
             StructField("writers" , StringType() , True) ,
             StructField("stars" , StringType() , True) ,
             StructField("movie_id" , StringType() , True)
-        ]))
+        ])
         return actor_schema 
     
     def review_schema() : 
-        review_schema = ArrayType(StructType([
+        review_schema = StructType([
             StructField("review_id" , StringType() , True) , 
             StructField("title_review" , StringType() , True) ,
             StructField("comment" , StringType() , True) ,
@@ -63,5 +65,5 @@ class IMDB_Schema :
             StructField("date" , StringType() , True) ,
             StructField("user_name" , StringType() , True) , 
             StructField("movie_id" , StringType() , True)
-        ]))
+        ])
         return review_schema

@@ -1,0 +1,42 @@
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the gobal default (10s).
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+        labels:
+          app: "prometheus"
+
+  - job_name: "nifi"
+    metrics_path: /metrics
+    scheme: http 
+    fallback_scrape_protocol: PrometheusText0.0.4
+    static_configs:
+      - targets: ["localhost:9101"]
+
+  - job_name: "kafka"
+    static_configs:
+      - targets: ["localhost:7071" ]
+
+  - job_name: "hdfs"
+    static_configs:
+      - targets: ["localhost:9080" , "localhost:9081" ]
+
+  - job_name: "spark"
+    static_configs:
+      - targets: ["localhost:8090" , "localhost:8091" ]
+
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['localhost:9187']     
+      
+  - job_name: "airflow"
+    static_configs:
+      - targets:['localhost:9102'] 

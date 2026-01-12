@@ -1,0 +1,16 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "review_id": "review_id",
+      "title_review": "title",
+      "comment": "comment",
+      "star": "rating",
+      "like": "like",
+      "dislike": "dislike",
+      "date": "review_date",
+      "user_name": "user_name",
+      "movie_id": "movie_id"
+    }
+  }
+]

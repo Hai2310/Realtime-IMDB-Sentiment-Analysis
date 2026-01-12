@@ -10,6 +10,34 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException, NoSuchElementException
 from bs4 import BeautifulSoup
 from selenium_stealth import stealth
+from tqdm import tqdm
+from confluent_kafka import Producer 
+import uuid 
+import time
+import threading 
+import json 
+import random as rd
+import psycopg2 
+
+producer = Producer({
+    "bootstrap.servers" : "localhost:9092" , 
+    # "retries" : 2000000000 ,
+    # "acks" : "all" ,
+    # "enable.idempotence" : True ,
+    # "max.in.flight.requests.per.connection" : 5 ,
+    # "linger.ms" : 5 ,
+    # "batch.size" : 16384 
+})
+
+conn = psycopg2.connect(
+    host="172.20.10.6",
+    dbname="imdb_sentiment",
+    user="postgres",
+    password="minhhai123"
+)
+conn.autocommit = False
+cur = conn.cursor()
+
 # ============================================
 # Configuration
 # ============================================
@@ -17,7 +45,7 @@ chrome_options = Options()
 chrome_options.add_argument("--headless=new")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.binary_location = r"/home/mhai/Project DE/EXAM_DATA/Week5 + Week6/kafka/chrome.exe"
+chrome_options.binary_location = "/usr/bin/google-chrome"
 chrome_options.add_argument(
     "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 )
@@ -31,6 +59,9 @@ stealth(driver,
         renderer="Intel Iris OpenGL Engine",
         fix_hairline=True,
 )
+
+
+
 # ============================================
 # Crawl danh sách diễn viên , đạo diễn
 # ============================================
@@ -51,7 +82,6 @@ def actors_list(actor) :
     writers = [s for s in director_list[1:4] if s != star_list[0]]
 
     country_el = actor.select_one('li.ipc-metadata-list__item.ipc-metadata-list__item--align-end[data-testid="title-details-origin"]'
-                                                    " div.ipc-metadata-list-item__content-container "
                                                     " ul.ipc-inline-list" 
                                                     " li.ipc-inline-list__item "
                                                     " a.ipc-metadata-list-item__list-content-item")
@@ -86,14 +116,14 @@ def actors_list(actor) :
                                                     " span.ipc-metadata-list-item__list-content-item.ipc-btn--not-interactable")
     gross_us_canada  = gross_us_canada_el.text.strip() if gross_us_canada_el else ""
 
-    gross_worldwide_el = actor.select_one('li.ipc-metadata-list__item.ipc-metadata-list__item--align-end[data-testid="title-boxoffice-cumulativeworldwidegross"]'
-                                                        " div.ipc-metadata-list-item__content-container "
-                                                        " ul.ipc-inline-list" 
-                                                        " li.ipc-inline-list__item "
-                                                        " span.ipc-metadata-list-item__list-content-item.ipc-btn--not-interactable")
-    gross_worldwide  = gross_worldwide_el.text.strip() if gross_worldwide_el else ""
+    gross_worldwise_el = actor.select_one('li.ipc-metadata-list__item.ipc-metadata-list__item--align-end[data-testid="title-boxoffice-grossdomestic"]'
+                                                    " div.ipc-metadata-list-item__content-container "
+                                                    " ul.ipc-inline-list" 
+                                                    " li.ipc-inline-list__item "
+                                                    " span.ipc-metadata-list-item__list-content-item.ipc-btn--not-interactable")
+    gross_worldwise  = gross_worldwise_el.text.strip() if gross_worldwise_el else ""
 
-    revenue = gross_worldwide if gross_worldwide is not None else gross_us_canada  
+    revenue = gross_worldwise if gross_worldwise is not None else gross_us_canada
 
     plot_el = actor.select_one("span[data-testid='plot-l']")
     plot = plot_el.text.strip() if plot_el else ""
@@ -101,15 +131,15 @@ def actors_list(actor) :
     poster_el = actor.select_one("img.ipc-image")
     poster = poster_el["src"] if poster_el else ""
 
-    return director, writers, stars, country, language, company, budget, revenue , plot, poster
+    return director, writers, stars, country, language, company, budget, revenue, plot, poster
 
 # ============================================
 # Crawl danh sách bình luận 
 # ============================================
-def reviews_list(review , reviews , movie_id , num) :
-    review_list = review.select("section.ipc-page-section article.sc-7ebcc14f-1.dtHbLR.user-review-item")
-    for rv in review_list :
-        review_id = f"R00{num}" 
+def reviews_list(review , reviews , movie_id , num_rv ) :
+    review_list = review.select("section.ipc-page-section article.sc-bb1e1e59-1.gtpcFu.user-review-item")
+    for rv in tqdm(review_list) :
+        review_id =  "R00" + f"{num_rv}"
 
         star_el = rv.select_one("span.ipc-rating-star--rating")
         star = star_el.text.strip() if star_el else ""  
@@ -143,35 +173,115 @@ def reviews_list(review , reviews , movie_id , num) :
             "user_name" : user_name ,
             "movie_id" : movie_id
         })
-        num += 1
-    return reviews , num
-def crawl_data() :
+        num_rv+=1
+    return reviews , num_rv
+def call_back(err , msg , record_id) :
+    conn2 = psycopg2.connect(
+        host="172.20.10.6",
+        dbname="imdb_sentiment",
+        user="postgres",
+        password="minhhai123"
+    )
+    cur2 = conn2.cursor()
+
+    if err is None:
+        cur2.execute("""
+            UPDATE movie_outbox
+            SET status='SENT', sent_at=NOW()
+            WHERE id=%s
+        """, (record_id,))
+        print(f"Delivery success to {msg.topic()} [{msg.partition()}] offset={msg.offset()} ")
+    else:
+        cur2.execute("""
+            UPDATE movie_outbox
+            SET status='FAILED',
+                retry_count = retry_count + 1
+            WHERE id=%s
+        """, (record_id,))
+        print(f"Delivery error : {err}")
+
+    conn2.commit()
+    cur2.close()
+    conn2.close()
+
+def sent_batch(batch , topic) :
+    cur.execute("""
+        INSERT INTO movie_outbox (topic, payload)
+        VALUES (%s, %s)
+        RETURNING id
+    """, (topic, json.dumps(batch)))
+
+    record_id = cur.fetchone()[0]
+    conn.commit()   
+
+    
+    producer.produce(
+        topic=topic,
+        value=json.dumps(batch),
+        on_delivery=lambda err, msg, rid=record_id:
+            call_back(err, msg, rid)
+    )
+    producer.poll(1)
+    print(f"Sent {len(batch)} record to {topic}")
+    
+def retry_failed():
+    cur.execute("""
+        SELECT id, topic, payload, retry_count
+        FROM movie_outbox
+        WHERE status='FAILED' AND retry_count < 5
+        ORDER BY id
+    """)
+
+    rows = cur.fetchall()
+    for record_id, topic, payload, retry_count in rows:
+        try:
+            producer.produce(
+                topic=topic,
+                key=str(record_id),
+                value=json.dumps(payload),
+                on_delivery=lambda err, msg, rid=record_id:
+                    call_back(err, msg, rid)
+            )
+            producer.poll(0.1)
+        except BufferError:
+            producer.poll(1)
+            producer.produce(
+                topic=topic,
+                key=str(record_id),
+                value=json.dumps(payload),
+                on_delivery=lambda err, msg, rid=record_id:
+                    call_back(err, msg, rid)
+            )
+
+def main() :
     # ============================================
     # Crawl danh sách phim
     # ============================================
+    
     url = "https://www.imdb.com/chart/top/"
     driver.get(url)
     time.sleep(3)
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
 
-    # movies = []
-    # actors = []
-    
-    # print('='*90)
-    # print("="*33 + "  Starting crawl IMDB  " + "="*33)
-    # print('='*90 + "\n")
     num = 1 
     num_rv = 1
     rows = soup.select("ul.ipc-metadata-list li.ipc-metadata-list-summary-item")
-    for row in rows[:3]:  
-        # print(f"=== Batch {num} ===" + "\n" )
-        # num += 1
-        # print('='*60)
-        # print("=== Starting crawl movies  ===")
-        # print('='*60 + "\n")
+    for row in tqdm(rows):
+        print("="*60) 
+        print(f" Starting crawl batch {num} :")
+        print("="*60)
+        num+=1  
+    
+        print('='*60)
+        print("=== Starting crawl movies ===")
+        print('='*60)
 
-        title_el = row.select_one("h3.ipc-title__text.ipc-title__text--reduced")
+        movies = []
+        actors = []
+        reviews = []
+
+        title_el = row.select_one("h3.ipc-title__text")
         link_el = row.select_one("a.ipc-title-link-wrapper")
         rating_el = row.select_one("span.ipc-rating-star--rating")
         rating = float(rating_el.text) if rating_el else None
@@ -185,103 +295,100 @@ def crawl_data() :
         movie_url = "https://www.imdb.com" + link_el["href"].split("?")[0]
         movie_id = movie_url.split("/")[-2]
 
-        # print("="*25 + " Crawl movies Successfully " + "="*25 + "\n")
+        print("="*25 + " Crawl movies Successfully " + "="*25)
 
         driver.get(movie_url)
         time.sleep(3)
         actor = BeautifulSoup(driver.page_source, "html.parser")
 
-        # print('='*60)
-        # print("=== Starting crawl actors ===")
-        # print('='*60+ "\n")
-        actor_id = f"A0{num}"
-        director, writers, stars, country, language, company, budget, revenue , plot, poster = actors_list(actor)
-        # print("="*25 + " Crawl actors Successfully " + "="*25 + "\n")
+        print('='*60)
+        print("=== Starting crawl actors ===")
+        print('='*60)
+
+        actor_id = "A00" + f"{num}"  
+        director, writers, stars, country, language, company, budget, revenue, plot, poster = actors_list(actor)
+        print("="*25 + " Crawl actors Successfully " + "="*25)
 
         review_url = movie_url.rstrip('/') + '/reviews' 
         driver.get(review_url)
         time.sleep(3)
 
-        # print('='*60)
-        # print("=== Starting crawl reviews ===")
-        # print('='*60 + "\n")
-
-        # try:
-        wait = WebDriverWait(driver, 10)
-        see_all_button = wait.until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "span.ipc-see-more.sc-e2b012eb-0.QEaqv.chained-see-more-button.sc-a8a7adf7-2"
-                                                        " button.ipc-btn.ipc-btn--single-padding"
-                                                        ".ipc-btn--center-align-content"
-                                                        ".ipc-btn--default-height.ipc-btn--core-base"
-                                                        ".ipc-btn--theme-base.ipc-btn--button-radius"
-                                                        ".ipc-btn--on-accent2"
-                                                        ".ipc-text-button"
-                                                        ".ipc-see-more__button"))
-        )
-        driver.execute_script("arguments[0].scrollIntoView(true);", see_all_button)
-        time.sleep(1)
-        driver.execute_script("arguments[0].click();", see_all_button)
-        # print("[INFO] Clicked 'See all' button successfully")
-        time.sleep(3)
-        # except Exception as e:
-            # print("[WARN] 'See all' button not found or not clickable:", str(e))
+        try:
+            wait = WebDriverWait(driver, 10)
+            see_all_button = wait.until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "span.ipc-see-more.sc-e2b012eb-0.QEaqv.chained-see-more-button.sc-a8a7adf7-2"
+                                                            " button.ipc-btn.ipc-btn--single-padding"
+                                                            ".ipc-btn--center-align-content"
+                                                            ".ipc-btn--default-height.ipc-btn--core-base"
+                                                            ".ipc-btn--theme-base.ipc-btn--button-radius"
+                                                            ".ipc-btn--on-accent2"
+                                                            ".ipc-text-button"
+                                                            ".ipc-see-more__button"))
+            )
+            driver.execute_script("arguments[0].scrollIntoView(true);", see_all_button)
+            time.sleep(1)
+            driver.execute_script("arguments[0].click();", see_all_button)
+            print("[INFO] Clicked 'See all' button successfully")
+            time.sleep(3)
+        except Exception as e:
+            print("[WARN] 'See all' button not found or not clickable:", str(e))
 
         wait = WebDriverWait(driver, 10)
         prev_count = 0
         same_count_rounds = 0  
-        max_reviews = 300 
-
-
-        while same_count_rounds < 2:
+        max_reviews = 500
+        while same_count_rounds < 3:
             try:
+                
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(2)
+
+                
                 try:
-                    load_more = WebDriverWait(driver, 2).until(
-                        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.ipc-btn.ipc-btn--on-accent2.ipc-see-more__button"))
-                    )
-                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", load_more)
+                    load_more = wait.until(EC.element_to_be_clickable(
+                        (By.CSS_SELECTOR, "button.ipc-btn.ipc-btn--on-accent2.ipc-see-more__button")
+                    ))
+                    driver.execute_script("arguments[0].scrollIntoView(true);", load_more)
                     driver.execute_script("arguments[0].click();", load_more)
-                    # print("[INFO] Clicked 'Load More'")
+                    print("[INFO] Clicked 'Load More'")
                 except Exception:
-                    same_count_rounds += 1
-                    continue
+                    pass  
 
-                WebDriverWait(driver, 2).until(
-                    lambda d: d.execute_script(
-                        "return document.querySelectorAll('section.ipc-page-section article.user-review-item').length;"
-                    ) > prev_count
-                )
+                
+                time.sleep(3)
 
-                review_count = driver.execute_script(
-                    "return document.querySelectorAll('section.ipc-page-section article.user-review-item').length;"
-                )
-                # print(f"[INFO] Loaded {review_count} reviews...")
+                
+                soup = BeautifulSoup(driver.page_source, "html.parser")
+                review_count = len(soup.select("section.ipc-page-section article.sc-bb1e1e59-1.gtpcFu.user-review-item"))
+                print(f"[INFO] Loaded {review_count} reviews...")
 
+                
                 if review_count == prev_count:
                     same_count_rounds += 1
                 else:
                     same_count_rounds = 0
                 prev_count = review_count
 
-                if review_count >= max_reviews:
-                    # print("[INFO] Enough reviews, stopping early.")
+                if review_count > max_reviews :
                     break
-
             except Exception as e:
-                # print("Lỗi khi load thêm:", str(e))
+                print("Lỗi khi load thêm:", str(e))
                 break
 
-        # print("[DONE] Đã load toàn bộ review.")
+        print("[DONE] Đã load toàn bộ review.")
 
 
 
         review = BeautifulSoup(driver.page_source , "html.parser")
-        
-        reviews = []
+        print('='*60)
+        print("=== Starting crawl reviews ===")
+        print('='*60)
+
         reviews , num_rv = reviews_list(review , reviews , movie_id , num_rv )
 
-        # print("="*25 + " Crawl reviews Successfully " + "="*25 + "\n")
+        print("="*25 + " Crawl reviews Successfully " + "="*25)
 
-        movies = {
+        movies.append({
             "movie_id": movie_id,
             "title": title_el.text.strip(),
             "rating": rating,
@@ -297,28 +404,31 @@ def crawl_data() :
             "plot": plot,
             "poster": poster,
             "url": movie_url
-        }
+        })
 
-        actors = {
+        actors.append({
             "actor_id" : actor_id ,
             "director" : director , 
             "writers" : writers , 
             "stars" : stars , 
             "movie_id" : movie_id 
-        }
-        # emit_batch(movies , actors , reviews)
-        emit("movie" , [movies])
-        emit("actor" , [actors]) 
-        emit("review" , reviews)
-        num += 1
+        })
 
+        print(f"[INFO] Collected {len(movies)} movies")
+        print(f"[INFO] Collected {len(actors)} actors")
+        print(f"[INFO] Collected {len(reviews)} reviews")
+
+        sent_batch(movies , "movies")
+        sent_batch(actors , "actors")
+        sent_batch(reviews , "reviews")
+        
+        producer.flush(10)
+
+        retry_failed()
+
+    # producer.flush()
 
         
-
-    # print(f"[INFO] Collected {len(movies)} movies")
-    # print(f"[INFO] Collected {len(actors)} actors")
-    # print(f"[INFO] Collected {len(reviews)} reviews")
-
     # movie_df = pd.DataFrame(movies)
     # actor_df = pd.DataFrame(actors)
     # review_df = pd.DataFrame(reviews)
@@ -330,31 +440,8 @@ def crawl_data() :
     # print("=== Saved reviews to JSON ===")
     # review_df.to_json("../data/reviews.json")
 
-    # print("="*25 + " All pipeline crawl Successfully " + "="*25)
-    
-    # return movies, actors, reviews
+    print("="*25 + " All pipeline crawl Successfully " + "="*25)
+    print("="*25 + " All data sent Successfully " + "="*25)
 
-def emit(tag , records) :
-    for r in records :
-        r["_type"] = tag 
-        print(json.dumps(r , ensure_ascii = False))
-
-def emit_batch(movie_obj, actor_obj, review_list):
-    batch = ""
-
-    movie_obj["_type"] = "movie"
-    batch += json.dumps(movie_obj, ensure_ascii=False) + "\n"
-
-    actor_obj["_type"] = "actor"
-    batch += json.dumps(actor_obj, ensure_ascii=False) + "\n"
-
-    for rv in review_list:
-        rv["_type"] = "review"
-        batch += json.dumps(rv, ensure_ascii=False) + "\n"
-
-    print(batch)
-        
 if __name__ == "__main__" :
-    crawl_data()
-
-    
+    main() 

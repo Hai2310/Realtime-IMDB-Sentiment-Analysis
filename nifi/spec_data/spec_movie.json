@@ -1,0 +1,22 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "movie_id": "movie_id",
+      "title": "title",
+      "rating": "rating",
+      "year": "year",
+      "vote_count": "vote_count",
+      "runtime": "runtime",
+      "items": "items",
+      "country": "country",
+      "language": "language",
+      "company": "company",
+      "budget": "budget",
+      "revenue": "revenue",
+      "plot": "plot",
+      "poster": "poster",
+      "url": "url"
+    }
+  }
+]

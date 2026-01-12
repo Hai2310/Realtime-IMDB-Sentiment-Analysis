@@ -1,0 +1,12 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "actor_id": "actor_id",
+      "director": "director",
+      "writers": "writers",
+      "stars": "stars",
+      "movie_id": "movie_id"
+    }
+  }
+]

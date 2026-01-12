@@ -7,7 +7,7 @@ spark = SparkSession.builder \
     .master("local[*]") \
     .getOrCreate()
 
-model = PipelineModel.load("models/tf_idf_model")
+model = PipelineModel.load("file:///home/enovo/prj/EXAM_DATA/Week5 + Week6/models/tf_idf_model")
 
 app = Flask(__name__)
 

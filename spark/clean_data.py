@@ -14,30 +14,34 @@ class DataClean :
         print("=== Starting clean movie ===")
         print("="*60)  
 
-        movie = movie.filter(~col("movie_id").startswith("{"))
-
+        movie = movie.filter(~col("movie_id").startswith("{")) \
+                     .drop("year" , "month")
+        
         # Chuyển đổi kiểu dữ liệu , làm sạch cột revenue
-        movie_revenue_clean = movie.withColumn("revenue" , regexp_replace(col("revenue") , "[\$,]" , "")) \
+        movie_revenue_clean = movie.withColumn("revenue", regexp_replace(col("revenue"), "[^0-9]", "")) \
                                     .withColumn("revenue" , trim(col("revenue")) ) \
                                     .withColumn("revenue" , when(col("revenue") == "" , 0).otherwise(col("revenue"))) \
-                                    .withColumn("revenue" , col("revenue").cast('int')) 
-        
+                                    .withColumn("revenue" , col("revenue").cast('long')) 
+        # .withColumn("revenue" , split(col("revenue") , " ").getItem(0)) \
         # Chuyển đổi kiểu dữ liệu , làm sạch cột budget
         movie_budget_clean = movie_revenue_clean.withColumn("budget" , when(col("budget") == "" , "0").otherwise(col("budget"))) \
-                                                    .withColumn("budget" , split(col("budget") , " ").getItem(0)) \
-                                                    .withColumn("budget" , regexp_replace(col("budget") , "[\$,]" , "")) \
+                                                    .withColumn("budget", regexp_replace(col("budget"), "[^0-9]", "")) \
                                                     .withColumn("budget" , trim(col("budget")) ) \
-                                                    .withColumn("budget" , col("budget").cast('int'))
+                                                    .withColumn("budget" , col("budget").cast('long'))
         
+        # .withColumn("budget" , split(col("budget") , " ").getItem(0)) \
         # Chuyển đổi kiểu dữ liệu , làm sạch cột vote_count
-        movie_clean =  movie_budget_clean.withColumn("vote_count" ,
-                            when(col("vote_count").endswith("M"),  regexp_replace(col("vote_count") , "M" , "").cast("double") * 1_000_000 ) \
-                            .when(col("vote_count").endswith("K"), regexp_replace(col("vote_count") , "K" , "").cast("double") * 1_000  ) \
-                            .otherwise(0) \
-                            .cast("int"))
+        movie_clean =  movie_budget_clean.withColumn("vote_count" , when(col("vote_count") == "" , "0").otherwise(col("budget"))) \
+                            .withColumn("vote_count" ,
+                                when(col("vote_count").endswith("M"),  regexp_replace(col("vote_count") , "M" , "").cast("double") * 1_000_000 ) \
+                                .when(col("vote_count").endswith("K"), regexp_replace(col("vote_count") , "K" , "").cast("double") * 1_000  ) \
+                                .otherwise(col("vote_count")) \
+                                .cast("long"))
+
         print("=== Cleaned movie successfully ===")
         return movie_clean
-    
+
+
     def actor_clean(actor) :
         # Lọc các record rác
         print("\n" + "="*60)
@@ -50,7 +54,7 @@ class DataClean :
                         .withColumn("stars" , regexp_replace(col("stars") , '[\[\]"]' , "") )
         print("=== Cleaned actor successfully ===")
         return actor_clean
-    
+
     def review_clean(review) : 
         print("\n" + "="*60)
         print("=== Starting clean review ===")
@@ -59,7 +63,7 @@ class DataClean :
         # Chuyển đổi kiểu dữ liệu , làm sạch cột star
         review_star_clean = review.withColumn("star" , when(col("star") == "" , "0") \
                                                 .otherwise(col("star")) \
-                                                .cast("int") )
+                                                .cast("double") )
         
         # Chuyển đổi kiểu dữ liệu , làm sạch cột like
         review_like_clean = review_star_clean.withColumn("like" , 
@@ -82,5 +86,4 @@ class DataClean :
         print("=== Cleaned review successfully ===")
 
         return review_clean
-
     

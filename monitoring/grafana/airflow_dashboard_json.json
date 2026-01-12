@@ -1,0 +1,63 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Airflow Prometheus Monitoring",
+    "timezone": "browser",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Task Duration (Seconds)",
+        "id": 1,
+        "targets": [
+          {
+            "expr": "airflow_task_duration_seconds",
+            "legendFormat": "Task Duration"
+          }
+        ],
+        "datasource": "Prometheus"
+      },
+      {
+        "type": "graph",
+        "title": "DAG Run Duration (Seconds)",
+        "id": 2,
+        "targets": [
+          {
+            "expr": "airflow_dagrun_duration_seconds",
+            "legendFormat": "DAG Duration"
+          }
+        ],
+        "datasource": "Prometheus"
+      },
+      {
+        "type": "stat",
+        "title": "Scheduler Heartbeat",
+        "id": 3,
+        "targets": [
+          {
+            "expr": "airflow_scheduler_heartbeat"
+          }
+        ],
+        "datasource": "Prometheus"
+      },
+      {
+        "type": "graph",
+        "title": "Pool Slot Usage",
+        "id": 4,
+        "targets": [
+          {
+            "expr": "airflow_pool_running_slots",
+            "legendFormat": "Running Slots"
+          },
+          {
+            "expr": "airflow_pool_queued_slots",
+            "legendFormat": "Queued Slots"
+          }
+        ],
+        "datasource": "Prometheus"
+      }
+    ],
+    "schemaVersion": 38,
+    "version": 1
+  },
+  "overwrite": false
+}

@@ -115,7 +115,7 @@ class ImdbPipeline :
             try :
                 df.write.format("jdbc").mode("append") \
                             .option("driver" ,"org.postgresql.Driver") \
-                            .option("url" , "jdbc:postgresql://192.168.65.189:5432/imdb_sentiment") \
+                            .option("url" , "jdbc:postgresql://172.20.10.6:5432/imdb_sentiment") \
                             .option("user" , "postgres") \
                             .option("password" ,"minhhai123") \
                             .option("dbtable" , f"public.{name}") \
@@ -128,7 +128,7 @@ class ImdbPipeline :
         for name , df in self.result.items() :
             query =  df.writeStream.outputMode("append") \
                             .foreachBatch(partial(save_psql , name = name)) \
-                            .option("checkpointLocation" , f"/home/enovo/prj/test/check_points/{name}/") \
+                            .option("checkpointLocation" , f"/home/enovo/prj/EXAM_DATA/Week5 + Week6/check_point_dir/{name}/") \
                             .trigger(processingTime = "5 seconds") \
                             .start() 
             queries.append(query)

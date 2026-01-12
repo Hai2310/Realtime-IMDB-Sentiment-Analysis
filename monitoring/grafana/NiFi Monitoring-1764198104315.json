@@ -1,0 +1,1035 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "General view of Nifi \r\n",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 21,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "name",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_cluster_version_info",
+          "instant": false,
+          "legendFormat": "{{version}}",
+          "refId": "A"
+        }
+      ],
+      "title": "NiFI Version",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 28,
+      "panels": [],
+      "title": "General view",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "text": "CONNECTED"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "0": {
+                  "text": "DISCONNECTED"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#d44a3a",
+                "value": 0
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 1
+              },
+              {
+                "color": "#299c46",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 25,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.0",
+      "repeat": "nifi_node",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_nodes_status{exported_instance=~\"$nifi_node\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "$nifi_node",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
+      "panels": [],
+      "title": "Nodes - Queued Items",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 10,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "repeat": "nifi_node",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "editorMode": "code",
+          "expr": "nifi_node_queuedItems{exported_instance=~\"$nifi_node\"}",
+          "instant": false,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "$nifi_node",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Nodes - Active Thread Count",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 15,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "repeat": "nifi_node",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_node_activeThreadCount{exported_instance=~\"$nifi_node\"}",
+          "legendFormat": "{{exported_instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "$nifi_node",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 19,
+      "panels": [],
+      "title": "Cluster",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 0,
+        "y": 27
+      },
+      "id": 20,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_cluster_flowFilesQueued",
+          "refId": "A"
+        }
+      ],
+      "title": "Flow Files Queued",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "deckbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 11,
+        "y": 27
+      },
+      "id": 21,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_cluster_bytesQueued",
+          "refId": "A"
+        }
+      ],
+      "title": "Bytes Queued",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 22,
+        "x": 0,
+        "y": 34
+      },
+      "id": 23,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_cluster_stoppedCount",
+          "legendFormat": "Stopped Count",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_cluster_invalidCount",
+          "legendFormat": "Invalid Count",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_cluster_runningCount",
+          "legendFormat": "Running Count",
+          "refId": "C"
+        }
+      ],
+      "title": "General proccessor counters ",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 32,
+      "panels": [],
+      "title": "Queued Item",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "af5007obxe5fkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 100000
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": false
+                }
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1031-a5ae-1d22-5570-5aa33b80825d\", component_name=\"success\", component_type=\"Connection\", destination_id=\"019a102b-a5ae-1d22-052b-7916a1c4ec06\", destination_name=\"ExecuteStreamCommand\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102d-a5ae-1d22-20d8-3348d4030c44\", source_name=\"GenerateFlowFile\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1008-a5ae-1d22-b860-30144cf55613\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a1004-a5ae-1d22-536a-c76aa6ba7e8a\", destination_name=\"SplitJson\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1004-a5ae-1d22-536a-c76aa6ba7e8a\", source_name=\"SplitJson\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1009-a5ae-1d22-5263-7ebfebbcf445\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a1005-a5ae-1d22-f7c4-e22aecfd6922\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1003-a5ae-1d22-96ac-b4b6a34b60de\", source_name=\"Get-Movie-Record\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1009-d7e2-1d22-0b1d-6a17f2989bfc\", component_name=\"success\", component_type=\"Connection\", destination_id=\"019a1000-b13a-1d1c-766f-59a752d6a2b0\", destination_name=\"SplitJson\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1000-30c5-1d0e-42c2-72a34e09d366\", source_name=\"Get-Actor-Record\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a100a-a5ae-1d22-103f-f4beb0f29883\", component_name=\"split\", component_type=\"Connection\", destination_id=\"019a1006-a5ae-1d22-6f0b-ce3038747a8f\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1004-a5ae-1d22-536a-c76aa6ba7e8a\", source_name=\"SplitJson\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a100b-a5ae-1d22-2fef-02a44c9578eb\", component_name=\"success\", component_type=\"Connection\", destination_id=\"7d22d7e2-019a-1000-020f-5ef029d560ee\", destination_name=\"mongo-output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1006-a5ae-1d22-6f0b-ce3038747a8f\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a100c-d7e2-1d22-42a6-adaf46034693\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a100b-d7e2-1d22-c94d-e1268b399986\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1000-30c5-1d0e-42c2-72a34e09d366\", source_name=\"Get-Actor-Record\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a100d-d7e2-1d22-e1e4-f61807fbd0cb\", component_name=\"split\", component_type=\"Connection\", destination_id=\"019a1006-d7e2-1d22-7dff-dc6a6eb38e3e\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1000-b13a-1d1c-766f-59a752d6a2b0\", source_name=\"SplitJson\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a100e-d7e2-1d22-483f-7ac7cd04bcde\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a1000-b13a-1d1c-766f-59a752d6a2b0\", destination_name=\"SplitJson\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1000-b13a-1d1c-766f-59a752d6a2b0\", source_name=\"SplitJson\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1010-d7e2-1d22-9a56-ad8bed16ced7\", component_name=\"success\", component_type=\"Connection\", destination_id=\"7d22d7e2-019a-1000-020f-5ef029d560ee\", destination_name=\"mongo-output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1006-d7e2-1d22-7dff-dc6a6eb38e3e\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", component_name=\"Kafka-review\", component_type=\"ProcessGroup\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1014-d7e2-1d22-1faf-cc3504932b75\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a1013-d7e2-1d22-d555-b74397370055\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1002-30c5-1d0e-cfc2-cb0524e42276\", source_name=\"Get-Review-Record\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1015-d7e2-1d22-efb6-339b5be0e182\", component_name=\"success\", component_type=\"Connection\", destination_id=\"019a1002-b13a-1d1c-cfcf-6e8af24dc5b7\", destination_name=\"SplitJson\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1002-30c5-1d0e-cfc2-cb0524e42276\", source_name=\"Get-Review-Record\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1016-d7e2-1d22-64cd-b69c88c73f56\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a1002-b13a-1d1c-cfcf-6e8af24dc5b7\", destination_name=\"SplitJson\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1002-b13a-1d1c-cfcf-6e8af24dc5b7\", source_name=\"SplitJson\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1017-d7e2-1d22-4241-6c271ec9a019\", component_name=\"split\", component_type=\"Connection\", destination_id=\"019a1008-d7e2-1d22-6815-3c254cef2a32\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1002-b13a-1d1c-cfcf-6e8af24dc5b7\", source_name=\"SplitJson\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1018-d7e2-1d22-f1a3-15562b9bca2f\", component_name=\"success\", component_type=\"Connection\", destination_id=\"7d22d7e2-019a-1000-020f-5ef029d560ee\", destination_name=\"mongo-output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1008-d7e2-1d22-6815-3c254cef2a32\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a101a-d7e2-1d22-a00f-56617d7dabae\", component_name=\"Get-List-File\", component_type=\"ProcessGroup\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1030-a5ae-1d22-65eb-48a4d6121457\", component_name=\"nonzero status\", component_type=\"Connection\", destination_id=\"019a102c-a5ae-1d22-0bd4-8e6765599f06\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102b-a5ae-1d22-052b-7916a1c4ec06\", source_name=\"ExecuteStreamCommand\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1032-a5ae-1d22-d6fb-282ad66fd0d1\", component_name=\"output stream\", component_type=\"Connection\", destination_id=\"019a102e-a5ae-1d22-c2bf-5b649ef93a65\", destination_name=\"SplitRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102b-a5ae-1d22-052b-7916a1c4ec06\", source_name=\"ExecuteStreamCommand\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1033-a5ae-1d22-25a7-8e22326a6acf\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a102e-a5ae-1d22-c2bf-5b649ef93a65\", destination_name=\"SplitRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102e-a5ae-1d22-c2bf-5b649ef93a65\", source_name=\"SplitRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1034-a5ae-1d22-0914-0ae60aa09edb\", component_name=\"splits\", component_type=\"Connection\", destination_id=\"019a102f-a5ae-1d22-7efb-11a0b3b2eed1\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102e-a5ae-1d22-c2bf-5b649ef93a65\", source_name=\"SplitRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"019a1035-a5ae-1d22-eaf4-9c58c6279eab\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"019a102f-a5ae-1d22-7efb-11a0b3b2eed1\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102f-a5ae-1d22-7efb-11a0b3b2eed1\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19ce-150d-eba3-7f957d2d682b\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"1018119a-19cd-150d-4620-b25f75ebb314\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1018119a-19cd-150d-4620-b25f75ebb314\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19d0-150d-a3a2-456ec593cd7d\", component_name=\"non-duplicate\", component_type=\"Connection\", destination_id=\"1018119a-19cc-150d-b17d-03a5e1c914d9\", destination_name=\"JoltTransformJSON\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1018119a-19cd-150d-4620-b25f75ebb314\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19d1-150d-b1b3-03743e98b596\", component_name=\"success\", component_type=\"Connection\", destination_id=\"101c119a-19cb-150d-ee83-d8dbe8f02dcf\", destination_name=\"ConvertRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1018119a-19cc-150d-b17d-03a5e1c914d9\", source_name=\"JoltTransformJSON\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19d2-150d-56b1-edaa2d71a35b\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"1018119a-19cc-150d-b17d-03a5e1c914d9\", destination_name=\"JoltTransformJSON\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1018119a-19cc-150d-b17d-03a5e1c914d9\", source_name=\"JoltTransformJSON\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19d3-150d-c884-26bbc18ff026\", component_name=\"success\", component_type=\"Connection\", destination_id=\"1027119a-19cb-150d-9e4f-af975306f495\", destination_name=\"MergeRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"101c119a-19cb-150d-ee83-d8dbe8f02dcf\", source_name=\"ConvertRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19d4-150d-e2be-c0a0711c3b4f\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"101c119a-19cb-150d-ee83-d8dbe8f02dcf\", destination_name=\"ConvertRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"101c119a-19cb-150d-ee83-d8dbe8f02dcf\", source_name=\"ConvertRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19d5-150d-1e2b-c02fb0257832\", component_name=\"merged\", component_type=\"Connection\", destination_id=\"102d119a-19cb-150d-8453-d1c5e5ec1604\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1027119a-19cb-150d-9e4f-af975306f495\", source_name=\"MergeRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119a-19d6-150d-1618-19c8dc9eae19\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"1027119a-19cb-150d-9e4f-af975306f495\", destination_name=\"MergeRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1027119a-19cb-150d-9e4f-af975306f495\", source_name=\"MergeRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119b-19cd-150d-bf0a-98d22215b650\", component_name=\"success\", component_type=\"Connection\", destination_id=\"1031119a-19cb-150d-8822-60f898e53047\", destination_name=\"PublishKafkaRecord_2_0\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"102d119a-19cb-150d-8453-d1c5e5ec1604\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1031119c-19cd-150d-6f75-739f841e5fd8\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"1031119a-19cc-150d-e316-771bf4e6b733\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1031119a-19cb-150d-8822-60f898e53047\", source_name=\"PublishKafkaRecord_2_0\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"103111b2-19d6-150d-06e0-0d90bcb4f31d\", component_name=\"is_movie\", component_type=\"Connection\", destination_id=\"1018119a-19cb-150d-ebfb-3619b024f4b7\", destination_name=\"is_movie_input\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", source_name=\"RouteOnAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"103111b4-19d6-150d-39b9-998aafbccfba\", component_name=\"unmatched\", component_type=\"Connection\", destination_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", destination_name=\"RouteOnAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", source_name=\"RouteOnAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"103111b9-19d6-150d-010a-90451e55b379\", component_name=\"success\", component_type=\"Connection\", destination_id=\"103111b6-19d6-150d-ef09-3fdfb96c358b\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"019a1003-a5ae-1d22-96ac-b4b6a34b60de\", source_name=\"Get-Movie-Record\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"103111ba-19d6-150d-80cd-d6d8b16265df\", component_name=\"matched\", component_type=\"Connection\", destination_id=\"019a1004-a5ae-1d22-536a-c76aa6ba7e8a\", destination_name=\"SplitJson\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"103111b6-19d6-150d-ef09-3fdfb96c358b\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"103111bb-19d6-150d-8e09-d7e9121c1090\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"103111b6-19d6-150d-ef09-3fdfb96c358b\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"103111b6-19d6-150d-ef09-3fdfb96c358b\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"103111bc-19d6-150d-9209-b89e93c26eab\", component_name=\"unmatched\", component_type=\"Connection\", destination_id=\"019a1004-a5ae-1d22-536a-c76aa6ba7e8a\", destination_name=\"SplitJson\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", source_id=\"103111b6-19d6-150d-ef09-3fdfb96c358b\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"10311220-19d6-150d-2bec-f5ee5d0247db\", component_name=\"success\", component_type=\"Connection\", destination_id=\"019a1022-d7e2-1d22-51ca-e145b370faad\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a101a-d7e2-1d22-a00f-56617d7dabae\", source_id=\"10311217-19d6-150d-1129-8a7289e256cf\", source_name=\"Movie_File\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"10311221-19d6-150d-d944-abeeb6801f9e\", component_name=\"success\", component_type=\"Connection\", destination_id=\"d7e21d22-1022-119a-171b-8c3827d0ec39\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a101a-d7e2-1d22-a00f-56617d7dabae\", source_id=\"1031121b-19d6-150d-59c1-54be3eeed1c2\", source_name=\"Actor_File\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"10311222-19d6-150d-c47d-f515e3bb239c\", component_name=\"success\", component_type=\"Connection\", destination_id=\"d7e21d24-1022-119a-e4ae-233532ead559\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a101a-d7e2-1d22-a00f-56617d7dabae\", source_id=\"1031121d-19d6-150d-c497-89139fb58f7d\", source_name=\"Review_File\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"1039119a-19cd-150d-56cd-334debe9b22c\", component_name=\"duplicate\", component_type=\"Connection\", destination_id=\"1031119a-19cd-150d-7842-0e8c2b88d676\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1018119a-19cd-150d-4620-b25f75ebb314\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1522-19cd-203c-10eb76d2f5c4\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"119a1039-151a-19cd-cc77-73887b7c9182\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151a-19cd-cc77-73887b7c9182\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1523-19cd-928c-e6900ac9582e\", component_name=\"non-duplicate\", component_type=\"Connection\", destination_id=\"119a1039-1519-19cd-6000-0e142826622c\", destination_name=\"JoltTransformJSON\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151a-19cd-cc77-73887b7c9182\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1524-19cd-eee6-6ec925af56ba\", component_name=\"success\", component_type=\"Connection\", destination_id=\"119a1039-151b-19cd-c33e-f23de82112b9\", destination_name=\"ConvertRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-1519-19cd-6000-0e142826622c\", source_name=\"JoltTransformJSON\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1525-19cd-5e57-aa6d10a03497\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"119a1039-1519-19cd-6000-0e142826622c\", destination_name=\"JoltTransformJSON\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-1519-19cd-6000-0e142826622c\", source_name=\"JoltTransformJSON\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1526-19cd-659b-616c4af0b3c0\", component_name=\"success\", component_type=\"Connection\", destination_id=\"119a1039-151c-19cd-dd9c-cfbc6d8dbb8d\", destination_name=\"MergeRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151b-19cd-c33e-f23de82112b9\", source_name=\"ConvertRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1527-19cd-1e2f-073ed3965044\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"119a1039-151b-19cd-c33e-f23de82112b9\", destination_name=\"ConvertRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151b-19cd-c33e-f23de82112b9\", source_name=\"ConvertRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1528-19cd-fe3f-2bee2b452e19\", component_name=\"merged\", component_type=\"Connection\", destination_id=\"119a1039-151d-19cd-1836-15ec71d35f97\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151c-19cd-dd9c-cfbc6d8dbb8d\", source_name=\"MergeRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1529-19cd-7680-9eab9c3d19b3\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"119a1039-151c-19cd-dd9c-cfbc6d8dbb8d\", destination_name=\"MergeRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151c-19cd-dd9c-cfbc6d8dbb8d\", source_name=\"MergeRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-152a-19cd-c2f8-af1438c5d5a7\", component_name=\"success\", component_type=\"Connection\", destination_id=\"119a1039-151e-19cd-6154-95ac535c276b\", destination_name=\"PublishKafkaRecord_2_0\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151d-19cd-1836-15ec71d35f97\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-152b-19cd-6bf5-0fe6e1f0310a\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"119a1039-151f-19cd-7e38-c86a35c3c7b2\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151e-19cd-6154-95ac535c276b\", source_name=\"PublishKafkaRecord_2_0\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-152c-19cd-0579-437bee32617d\", component_name=\"duplicate\", component_type=\"Connection\", destination_id=\"119a1039-1520-19cd-2206-04ea44a57c62\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-151a-19cd-cc77-73887b7c9182\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-152d-19cd-cbe4-a295bdddc348\", component_type=\"Connection\", destination_id=\"119a1039-1521-19cd-0dc2-835930c545f9\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-1518-19cd-d8e7-05e6160c6812\", source_name=\"is_review_input\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-152e-19cd-5f56-b15156fd7ff6\", component_name=\"matched\", component_type=\"Connection\", destination_id=\"119a1039-151a-19cd-cc77-73887b7c9182\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-1521-19cd-0dc2-835930c545f9\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-152f-19cd-2883-ddc2b4fdb0f1\", component_name=\"unmatched\", component_type=\"Connection\", destination_id=\"119a1039-151a-19cd-cc77-73887b7c9182\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-1521-19cd-0dc2-835930c545f9\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a1039-1530-19cd-ca5d-d873edcbfc5f\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"119a1039-1521-19cd-0dc2-835930c545f9\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a1013-650d-19cb-fd79-f34506b20d5d\", source_id=\"119a1039-1521-19cd-0dc2-835930c545f9\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"119a103e-1530-19cd-3cd7-2d150436e034\", component_name=\"is_review\", component_type=\"Connection\", destination_id=\"119a1039-1518-19cd-d8e7-05e6160c6812\", destination_name=\"is_review_input\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", source_name=\"RouteOnAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"12261031-1510-19d6-2611-d2deb2a29c09\", component_name=\"success\", component_type=\"Connection\", destination_id=\"12261031-150f-19d6-3057-6dde22a58b7f\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"12261031-150d-19d6-d07e-e6850c0a8e9f\", source_name=\"ConsumeKafkaRecord_2_0\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"12261031-1511-19d6-00b6-19349ccb71cd\", component_name=\"success\", component_type=\"Connection\", destination_id=\"12261031-150e-19d6-d0af-548b81735913\", destination_name=\"PutHDFS\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"12261031-150f-19d6-3057-6dde22a58b7f\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"12261031-1512-19d6-050f-0aa5f3840356\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"12261031-150e-19d6-d0af-548b81735913\", destination_name=\"PutHDFS\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"12261031-150e-19d6-d0af-548b81735913\", source_name=\"PutHDFS\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1522-119a-1039-b225-a4a17948d346\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"19cd151a-119a-1039-df5d-14fcdfcacf70\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151a-119a-1039-df5d-14fcdfcacf70\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1523-119a-1039-1479-f7044060d855\", component_name=\"non-duplicate\", component_type=\"Connection\", destination_id=\"19cd1519-119a-1039-0c9b-d9502bf7b065\", destination_name=\"JoltTransformJSON\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151a-119a-1039-df5d-14fcdfcacf70\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1524-119a-1039-1258-cc591aaf32fc\", component_name=\"success\", component_type=\"Connection\", destination_id=\"19cd151b-119a-1039-ec4e-56ec08aaa14d\", destination_name=\"ConvertRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd1519-119a-1039-0c9b-d9502bf7b065\", source_name=\"JoltTransformJSON\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1525-119a-1039-7101-f57b799d4cee\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"19cd1519-119a-1039-0c9b-d9502bf7b065\", destination_name=\"JoltTransformJSON\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd1519-119a-1039-0c9b-d9502bf7b065\", source_name=\"JoltTransformJSON\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1526-119a-1039-a7b0-b686ea478c6a\", component_name=\"success\", component_type=\"Connection\", destination_id=\"19cd151c-119a-1039-9fec-9e15d4dab69c\", destination_name=\"MergeRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151b-119a-1039-ec4e-56ec08aaa14d\", source_name=\"ConvertRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1527-119a-1039-cc08-ba966a1df132\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"19cd151b-119a-1039-ec4e-56ec08aaa14d\", destination_name=\"ConvertRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151b-119a-1039-ec4e-56ec08aaa14d\", source_name=\"ConvertRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1528-119a-1039-a781-d74915561682\", component_name=\"merged\", component_type=\"Connection\", destination_id=\"19cd151d-119a-1039-04c8-a546a6e4aeac\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151c-119a-1039-9fec-9e15d4dab69c\", source_name=\"MergeRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1529-119a-1039-7949-fe47677d97d5\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"19cd151c-119a-1039-9fec-9e15d4dab69c\", destination_name=\"MergeRecord\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151c-119a-1039-9fec-9e15d4dab69c\", source_name=\"MergeRecord\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd152a-119a-1039-349c-b5063457bdcc\", component_name=\"success\", component_type=\"Connection\", destination_id=\"19cd151e-119a-1039-d3e8-bc3a416cfa03\", destination_name=\"PublishKafkaRecord_2_0\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151d-119a-1039-04c8-a546a6e4aeac\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd152b-119a-1039-72c6-bd260fb6c1aa\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"19cd151f-119a-1039-c6bd-baea34e85c65\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151e-119a-1039-d3e8-bc3a416cfa03\", source_name=\"PublishKafkaRecord_2_0\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd152c-119a-1039-3fb4-4f889ef77ddd\", component_name=\"duplicate\", component_type=\"Connection\", destination_id=\"19cd1520-119a-1039-5929-fe4acef999b3\", destination_name=\"PutFile\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd151a-119a-1039-df5d-14fcdfcacf70\", source_name=\"DetectDuplicate\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd152d-119a-1039-8066-224dbc3b6ee8\", component_type=\"Connection\", destination_id=\"19cd1521-119a-1039-2184-5cccf6e9065b\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd1518-119a-1039-1abc-9b2d0f058ead\", source_name=\"is_actor_input\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd152e-119a-1039-8a1d-170ea8a08406\", component_name=\"matched\", component_type=\"Connection\", destination_id=\"19cd151a-119a-1039-df5d-14fcdfcacf70\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd1521-119a-1039-2184-5cccf6e9065b\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd152f-119a-1039-df2d-12ae62d5f69d\", component_name=\"unmatched\", component_type=\"Connection\", destination_id=\"19cd151a-119a-1039-df5d-14fcdfcacf70\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd1521-119a-1039-2184-5cccf6e9065b\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1530-119a-1039-e51b-4a62483ac7da\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"19cd1521-119a-1039-2184-5cccf6e9065b\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", source_id=\"19cd1521-119a-1039-2184-5cccf6e9065b\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19cd1535-119a-1039-0f70-91372d264140\", component_name=\"is_actor\", component_type=\"Connection\", destination_id=\"19cd1518-119a-1039-1abc-9b2d0f058ead\", destination_name=\"is_actor_input\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", source_name=\"RouteOnAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19d61510-1226-1031-f63f-204b03cf542a\", component_name=\"success\", component_type=\"Connection\", destination_id=\"19d6150f-1226-1031-c771-e0cbc40c0e40\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"19d6150d-1226-1031-ea8f-86b5d31038c9\", source_name=\"ConsumeKafkaRecord_2_0\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19d61511-1226-1031-d7bf-0a2f67280260\", component_name=\"success\", component_type=\"Connection\", destination_id=\"19d6150e-1226-1031-5ca6-ccf0a939ae91\", destination_name=\"PutHDFS\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"19d6150f-1226-1031-c771-e0cbc40c0e40\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"19d61512-1226-1031-04b1-70c01db2461e\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"19d6150e-1226-1031-5ca6-ccf0a939ae91\", destination_name=\"PutHDFS\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"19d6150e-1226-1031-5ca6-ccf0a939ae91\", source_name=\"PutHDFS\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"7d12025f-019a-1000-7249-e6e8ea424f0d\", component_name=\"Get-Log-MongoDB\", component_type=\"ProcessGroup\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"836bc3b4-019a-1000-eafe-28746ff22e32\", component_name=\"matched\", component_type=\"Connection\", destination_id=\"d7e21d3c-1022-119a-f359-d66a0073455f\", destination_name=\"crawl_output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102f-a5ae-1d22-7efb-11a0b3b2eed1\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"836bd6d4-019a-1000-eee0-5d38ae1266ae\", component_name=\"unmatched\", component_type=\"Connection\", destination_id=\"d7e21d3c-1022-119a-f359-d66a0073455f\", destination_name=\"crawl_output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"7a4677e3-019a-1000-dd40-c4ebb0d03f70\", source_id=\"019a102f-a5ae-1d22-7efb-11a0b3b2eed1\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8374f375-019a-1000-9d90-70aadbc0a93e\", component_name=\"Kafka-actor\", component_type=\"ProcessGroup\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", component_name=\"Kafka-movie\", component_type=\"ProcessGroup\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8c853814-019a-1000-4811-bddb8ea08ec9\", component_type=\"Connection\", destination_id=\"8c84825b-019a-1000-7a21-ce680ac59904\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"1018119a-19cb-150d-ebfb-3619b024f4b7\", source_name=\"is_movie_input\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8c854708-019a-1000-d08b-0f2c13d07438\", component_name=\"matched\", component_type=\"Connection\", destination_id=\"1018119a-19cd-150d-4620-b25f75ebb314\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"8c84825b-019a-1000-7a21-ce680ac59904\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8c855cd8-019a-1000-d56b-67db90818c49\", component_name=\"unmatched\", component_type=\"Connection\", destination_id=\"1018119a-19cd-150d-4620-b25f75ebb314\", destination_name=\"DetectDuplicate\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"8c84825b-019a-1000-7a21-ce680ac59904\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8c858b49-019a-1000-90d4-b91579836b52\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"8c84825b-019a-1000-7a21-ce680ac59904\", destination_name=\"EvaluateJsonPath\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"84c4838e-019a-1000-eae8-301602f58bd9\", source_id=\"8c84825b-019a-1000-7a21-ce680ac59904\", source_name=\"EvaluateJsonPath\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8cf43391-019a-1000-4f82-5d72d215a68b\", component_name=\"success\", component_type=\"Connection\", destination_id=\"8cf2737e-019a-1000-94a8-df96e0d217f2\", destination_name=\"UpdateAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"10311226-19d6-150d-b938-0184c3255e5b\", source_name=\"ConsumeKafkaRecord_2_0\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8cf4bdb2-019a-1000-0e2c-e36c64af9d4a\", component_name=\"success\", component_type=\"Connection\", destination_id=\"8ce5e4c9-019a-1000-7a3c-9df3004b6c58\", destination_name=\"PutHDFS\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"8cf2737e-019a-1000-94a8-df96e0d217f2\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"8cf4cfa6-019a-1000-1814-d041f5eb478b\", component_name=\"failure\", component_type=\"Connection\", destination_id=\"8ce5e4c9-019a-1000-7a3c-9df3004b6c58\", destination_name=\"PutHDFS\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"8ce5e4c9-019a-1000-7a3c-9df3004b6c58\", source_name=\"PutHDFS\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"d7e21d2d-1022-119a-5b5a-f8c358b219d1\", component_name=\"success\", component_type=\"Connection\", destination_id=\"d7e21d2c-1022-119a-162b-64ddec7943f6\", destination_name=\"file_output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a101a-d7e2-1d22-a00f-56617d7dabae\", source_id=\"019a1022-d7e2-1d22-51ca-e145b370faad\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"d7e21d2e-1022-119a-aa76-308442ee2277\", component_name=\"success\", component_type=\"Connection\", destination_id=\"d7e21d2c-1022-119a-162b-64ddec7943f6\", destination_name=\"file_output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a101a-d7e2-1d22-a00f-56617d7dabae\", source_id=\"d7e21d22-1022-119a-171b-8c3827d0ec39\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"d7e21d2f-1022-119a-f39b-a6d061364699\", component_name=\"success\", component_type=\"Connection\", destination_id=\"d7e21d2c-1022-119a-162b-64ddec7943f6\", destination_name=\"file_output\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"019a101a-d7e2-1d22-a00f-56617d7dabae\", source_id=\"d7e21d24-1022-119a-e4ae-233532ead559\", source_name=\"UpdateAttribute\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"d7e21d3f-1022-119a-4a55-6c8a3919b0c8\", component_type=\"Connection\", destination_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", destination_name=\"RouteOnAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"7d22d7e2-019a-1000-020f-5ef029d560ee\", source_name=\"mongo-output\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"d7e21d40-1022-119a-1313-d2d4443d4430\", component_type=\"Connection\", destination_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", destination_name=\"RouteOnAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"d7e21d3c-1022-119a-f359-d66a0073455f\", source_name=\"crawl_output\"}",
+                  "nifi_amount_items_queued {__name__=\"nifi_amount_items_queued\", component_id=\"d7e21d41-1022-119a-6b9c-f82d9961ed06\", component_type=\"Connection\", destination_id=\"d7e21d38-1022-119a-9cb3-2bc06bdd1e95\", destination_name=\"RouteOnAttribute\", exported_instance=\"MinhHai.localdomain\", instance=\"localhost:9101\", job=\"nifi\", parent_id=\"790ca54a-019a-1000-fe95-f467f7c7703e\", source_id=\"d7e21d2c-1022-119a-162b-64ddec7943f6\", source_name=\"file_output\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 34,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af5007obxe5fkd"
+          },
+          "expr": "nifi_amount_items_queued",
+          "instant": false,
+          "legendFormat": "{{processorName}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Queue item per PG",
+      "transparent": true,
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "5m",
+  "schemaVersion": 42,
+  "tags": [
+    "NiFi"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "af5007obxe5fkd",
+        "definition": "label_values(nifi_nodes_status,exported_instance)",
+        "includeAll": true,
+        "name": "nifi_node",
+        "options": [],
+        "query": "label_values(nifi_nodes_status,exported_instance)",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "NiFi Monitoring",
+  "uid": "BflKDLaZz",
+  "version": 2
+}

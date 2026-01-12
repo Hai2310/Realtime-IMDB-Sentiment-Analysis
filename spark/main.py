@@ -2,7 +2,7 @@ from orchestration import ImdbPipeline
 import traceback
 import sys
 
-sys.path.append("/home/enovo/prj/test/spark")
+sys.path.append("/home/enovo/prj/EXAM_DATA/Week5 + Week6/spark")
 
 def main() :
     print("\n" + "="*90)

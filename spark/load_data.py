@@ -11,23 +11,20 @@ from configuration import SparkConfig , IMDB_Schema
 class DataLoader :
     def __init__(selt) :
         selt.spark = SparkConfig.create_sparksession()
+        selt.host = "hdfs://localhost:9000"
         
     def movie_load(selt) :
         print("\n" + "="*60)
         print("=== Starting load movie ===")
         print("="*60)
 
-        movie = selt.spark.readStream.format("kafka" ).option("kafka.bootstrap.servers" , "localhost:9092" ) \
-                                                .option("subscribe" , "movie") \
-                                                .option("startingOffsets" , "earliest") \
-                                                .load()
+        movie = selt.spark.readStream.format("json" ) \
+                                    .schema(IMDB_Schema.movie_schema()) \
+                                    .option("maxFilePerTrigger" , 1) \
+                                    .load(f"{selt.host}/IMDB/movie")
         
-        movie_generate = movie.withColumn("movie_ts" , col("timestamp")) \
+        movie_generate = movie.withColumn("movie_ts" , current_timestamp()) \
                                         .withWatermark("movie_ts" , "10 minutes")
-        
-        movie_generate = movie_generate.withColumn("value" , explode(
-                                                    from_json(col("value").cast("string") , IMDB_Schema.movie_schema()))) \
-                                                    .select("value.*" , "movie_ts")
         
         
         print("=== Loaded movie successfully ===")
@@ -37,17 +34,14 @@ class DataLoader :
         print("\n" + "="*60)
         print("=== Starting load actor ===")
         print("="*60)
-        actor = selt.spark.readStream.format("kafka" ).option("kafka.bootstrap.servers" , "localhost:9092" ) \
-                                                .option("subscribe" , "actor") \
-                                                .option("startingOffsets" , "earliest") \
-                                                .load()
+        actor = selt.spark.readStream.format("json") \
+                                    .schema(IMDB_Schema.actor_schema()) \
+                                    .option("maxFilePerTrigger" , 1) \
+                                    .load(f"{selt.host}/IMDB/actor")
         
-        actor_generate = actor.withColumn("actor_ts" , col("timestamp")) \
+        actor_generate = actor.withColumn("actor_ts" , current_timestamp()) \
                                         .withWatermark("actor_ts" , "10 minutes")
         
-        actor_generate = actor_generate.withColumn("value" , explode(
-                                                    from_json(col("value").cast("string") , IMDB_Schema.actor_schema()))) \
-                                                    .select("value.*" , "actor_ts")
         
         
         print("=== Loaded actor successfully ===")
@@ -58,17 +52,13 @@ class DataLoader :
         print("=== Starting review actor ===")
         print("="*60)
 
-        review = selt.spark.readStream.format("kafka" ).option("kafka.bootstrap.servers" , "localhost:9092" ) \
-                                                .option("subscribe" , "review") \
-                                                .option("startingOffsets" , "earliest") \
-                                                .load()
+        review = selt.spark.readStream.format("json") \
+                                    .schema(IMDB_Schema.review_schema()) \
+                                    .option("maxFilePerTrigger" , 1) \
+                                    .load(f"{selt.host}/IMDB/review")
         
-        review_generate = review.withColumn("review_ts" , col("timestamp")) \
+        review_generate = review.withColumn("review_ts" , current_timestamp()) \
                                         .withWatermark("review_ts" , "10 minutes")
-        
-        review_generate = review_generate.withColumn("value" , explode(
-                                                    from_json(col("value").cast("string") , IMDB_Schema.review_schema()))) \
-                                                    .select("value.*" , "review_ts")
         
         
         print("=== Loaded review successfully ===")

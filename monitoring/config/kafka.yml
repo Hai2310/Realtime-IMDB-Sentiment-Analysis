@@ -1,0 +1,20 @@
+startDelaySeconds: 0
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+
+rules:
+  - pattern: 'kafka.server<type=(.+), name=(.+)PerSec\w*><>Count'
+    name: kafka_server_$1_$2_total
+  - pattern: 'kafka.server<type=(.+), name=(.+)><>(Value|Count)'
+    name: kafka_server_$1_$2
+  - pattern: 'kafka.network<type=(.+), name=(.+)><>Count'
+    name: kafka_network_$1_$2_total
+  - pattern: 'kafka.network<type=(.+), name=(.+)><>(Mean|95thPercentile)'
+    name: kafka_network_$1_$2
+  - pattern: 'kafka.controller<type=(.+), name=(.+)><>(Value|Count)'
+    name: kafka_controller_$1_$2
+  - pattern: 'kafka.log<type=(.+), name=(.+)><>(Value|Count)'
+    name: kafka_log_$1_$2
+  - pattern: ".*"
+    name: jmx_$0
+
