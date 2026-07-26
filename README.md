@@ -3,7 +3,7 @@
 > Hệ thống Data Engineering end-to-end dùng để thu thập dữ liệu phim IMDb, xử lý dữ liệu theo luồng, phân tích cảm xúc bình luận, lưu kết quả vào PostgreSQL và trực quan hóa bằng Grafana, Power BI và Flask.
 
 <p align="center">
-  <img src="imdb_pipeline_architecture.png" alt="Real-Time IMDb Data Pipeline Architecture" width="100%" />
+  <img src="imdb_flow.png" alt="Real-Time IMDb Data Pipeline Architecture" width="100%" />
 </p>
 
 ---
